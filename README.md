@@ -17,4 +17,4 @@ While completing the survey, each respondent will be notified of how much they w
 2.	The application will show them how much each respondent will be paid and if they agree, they can deposit the ETH.
 3.	The contract will move a percentage of the ETH to the development teams Ethereum address, so they can keep improving the application.
 4.	The respondent will then fill in a survey and get ETH sent to their Ethereum address.
-5.	When the expiry date is reached and the number of users filling in the survey hasn't reached the max, they left over ETH will be sent back to the survey author.
+5.	When the expiry date is reached and the number of users filling in the survey hasn't reached the max, the left over ETH will be sent back to the survey author.
