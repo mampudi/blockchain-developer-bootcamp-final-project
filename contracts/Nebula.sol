@@ -21,24 +21,18 @@ contract Nebula {
   }
 
   //Register partner
-  function registerPartner(address _partner) {
+  function registerPartner(address _partner) public {
 
   }
 
   //Register customer
-  function registerPartner(address _customer) {
+  function registerCustomer(address _customer) public {
 
   }
 
   //Register artist
-  function registerArtist(address _artist) {
+  function registerArtist(address _artist) public {
 
   }
-
-  //Register artist
-  function registerArtist(address _partner, address _customer, _amountSpent) {
-
-  }
-
 
 }
