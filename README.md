@@ -1,10 +1,10 @@
 # blockchain-developer-bootcamp-final-project
 
-This is a decentralized loyalty program that allows customers to earn loyalty tokens when they purchase from partners. 
+This is a decentralized loyalty program that allows customers to earn ETH when they purchase from partners. 
 
 # About
 
-The purpose of this project is to develop a platform where customers can earn loyalty tokens when they purchase from partners. When making a purchase the partner will reward the customer with tokens based on the total value that the customer spent. These tokens should be exchangeable for other ERC20 tokens like ETH or DAI allowing customers to be in total control of how they move and preserve their value.
+The purpose of this project is to develop a platform where customers can earn ETH when they purchase from partners. When making a purchase the partner will reward the customer with ETH based on the total value that the customer spent. The custmer can then sawp the ETH for DAI or other ERC20 tokens allowing customers to be in total control of how they move and preserve their value.
 
 The customers that have made a purchase from any of the partners within the last 7 days will be eligible for a weekly NFT drop/voucher (lottery). This NFT could be;
 * a voucher from one of the partners that allows the winner to receive a specified package. 
