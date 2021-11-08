@@ -12,6 +12,7 @@ import "@chainlink/contracts/src/v0.8/interfaces/KeeperCompatibleInterface.sol";
   event ArtistRegistered(address artist);
   event LogDepositMade(address indexed accountAddress, uint amount);
   event LogWithdrawal(address indexed accountAddress, uint withdrawAmount, uint newBalance);
+  event OwnerChanged(address newOwner);
 
   uint public _sPartnerRegistrationFee = 1000 wei;
   uint public _sCustomerRegistrationFee = 100 wei;
@@ -22,6 +23,7 @@ import "@chainlink/contracts/src/v0.8/interfaces/KeeperCompatibleInterface.sol";
   uint public _sCounter;
   uint public _sLotteryPercentage;
 
+
   enum LotteryState {Open, Calculating} 
   LotteryState public _sState;
 
@@ -31,18 +33,38 @@ import "@chainlink/contracts/src/v0.8/interfaces/KeeperCompatibleInterface.sol";
   bytes32 _sKeyHash = 0x6c3699283bda56ad74f6b855546325b68d482e983852a7a82979cc4807b641f4;
   uint _sChainLinkFee = 0.1 * 10 ** 18; //0.1 LINK
 
-
+  address public _sOwner;
   address payable[] public _sCustomers;
   address payable[] public _sLotteryCustomers;
   address public _sRecentWinningCustomer;
   uint public _sRecentWinnings;
+
   mapping(address => bool) public _sPartners;
   mapping (address => uint) public _sBalances;
+
+  modifier onlyOwner {
+    require(msg.sender == _sOwner, "Not an owner");
+    _;
+  }
+
 
   constructor() VRFConsumerBase(_sVrfCoordinator, _sLinkToken){
     _sCounter = 0;
     _sLastUpkeep = block.timestamp;
     _sLotteryPercentage = 1; 
+    _setOwner(msg.sender);
+  }
+
+  //set the owner and make sure it is only callable by the current owner
+  function setOwner(address newOwner) external onlyOwner {
+    _setOwner(newOwner);
+  }
+
+  //cannot only get called with the contract e.g the constructor
+  function _setOwner(address newOwner) internal {
+    require(newOwner != address(0), "Owner cannot be a zero address");
+    _sOwner = newOwner;
+    emit OwnerChanged(newOwner);
   }
 
   //partner pays to register
