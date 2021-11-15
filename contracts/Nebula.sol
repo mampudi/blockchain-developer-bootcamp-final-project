@@ -153,7 +153,7 @@ import "@chainlink/contracts/src/v0.8/interfaces/KeeperCompatibleInterface.sol";
   }
 
   //after registering with keeper it will run this and call perform upkeep if all the things are true;
-  function checkUpkeep(bytes calldata checkData /* checkData */) public view override returns(bool _upkeepNeeded, bytes memory performData){
+  function checkUpkeep(bytes calldata checkData /* checkData */) public view override returns(bool _upkeepNeeded, bytes memory performData /* performData */){
     bool hasLink = LINK.balanceOf(address(this))>= _sChainLinkFee;
     bool isOpen = _sState == LotteryState.Open;
     bool isTime = (block.timestamp - _sLastUpkeep) > 1 minutes;
@@ -163,7 +163,7 @@ import "@chainlink/contracts/src/v0.8/interfaces/KeeperCompatibleInterface.sol";
   }
 
   //running the lottery on a schedule
-  function performUpkeep(bytes calldata /* performData */) external override {
+  function performUpkeep(bytes calldata /* calldata */) external override {
     require(_sState == LotteryState.Open,"Lottery is closed");
     require((block.timestamp - _sLastUpkeep) > 1 minutes,"1 minute has not passed");
     require(LINK.balanceOf(address(this))>= _sChainLinkFee,"Not enough Link");
