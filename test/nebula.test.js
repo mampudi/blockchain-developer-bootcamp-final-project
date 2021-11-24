@@ -40,17 +40,6 @@ contract("Nebula", function (accounts) {
     assert.equal(await instance.partnerRegistered(madtrix),true);
   });
 
-  it("should not register customer bacause partner is not registered", async () => {
-    await catchRevert(await instance.registerCustomer(mampudi,{ from: madtrix, value: customerRegistrationdeposit}));
-
-  });
-
-  it("should not register customer bacause of insuffcient rgsitration fee", async () => {
-    await instance.registerPartner({ from: madtrix, value: deposit  });
-    assert.equal(await instance.registerCustomer(mampudi,{ from: madtrix, value: customerRegistrationdeposit}), true);
-
-  });
-  
   it("should register customer", async () => {
     await instance.registerPartner({ from: madtrix, value: deposit  });
     await instance.registerCustomer(mampudi,{ from: madtrix, value: customerRegistrationFee});
@@ -59,6 +48,17 @@ contract("Nebula", function (accounts) {
       1,
       "number of customers is not correct",
     );
+
+  });
+
+  it("should not register customer bacause partner is not registered", async () => {
+    await catchRevert(instance.registerCustomer(mampudi,{ from: madtrix, value: customerRegistrationdeposit}));
+
+  });
+
+  it("should not register customer bacause of insuffcient registration fee", async () => {
+    await instance.registerPartner({ from: madtrix, value: deposit  });
+    await catchRevert(instance.registerCustomer(mampudi,{ from: madtrix, value: customerRegistrationdeposit}));
 
   });
 
