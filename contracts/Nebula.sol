@@ -5,7 +5,7 @@ pragma solidity >=0.8.0 <0.9.0;
 import "@chainlink/contracts/src/v0.8/VRFConsumerBase.sol";
 import "@chainlink/contracts/src/v0.8/interfaces/KeeperCompatibleInterface.sol";
 
- contract YourContract is VRFConsumerBase, KeeperCompatibleInterface{
+ contract Nebula is VRFConsumerBase, KeeperCompatibleInterface{
 
   event PartnerRegistered(address partner);
   event CustomerRegistered(address customer);
@@ -22,7 +22,6 @@ import "@chainlink/contracts/src/v0.8/interfaces/KeeperCompatibleInterface.sol";
   uint public _sLastUpkeep;
   uint public _sCounter;
   uint public _sLotteryPercentage;
-
 
   enum LotteryState {Open, Calculating} 
   LotteryState public _sState;
@@ -68,14 +67,14 @@ import "@chainlink/contracts/src/v0.8/interfaces/KeeperCompatibleInterface.sol";
   }
 
   //partner pays to register
-  function registerPartner(address _partner) public payable returns (bool) {
-    require(_sPartners[_partner] == false, "The partnet already exists");
+  function registerPartner() public payable returns (bool) {
+    require(_sPartners[msg.sender] == false, "The partnet already exists");
     require(msg.value >= _sPartnerRegistrationFee, "Not enough fee paid 1000 wei");
-    _sPartners[_partner] = true;
+    _sPartners[msg.sender] = true;
     _sNumberOfPartners++;
     _sBalances[address(this)] += msg.value;
-    emit PartnerRegistered(_partner);
-    return _sPartners[_partner];
+    emit PartnerRegistered(msg.sender);
+    return _sPartners[msg.sender];
   }
 
   //check if partner is registered
@@ -85,23 +84,22 @@ import "@chainlink/contracts/src/v0.8/interfaces/KeeperCompatibleInterface.sol";
 
   //partner pays to register a customer
   function registerCustomer(address payable _customer) public payable returns (bool) {
-    require(_sPartners[msg.sender], "Partner not register");
+    require(_sPartners[msg.sender], "Partner not registered");
     require(msg.value >= _sCustomerRegistrationFee, "Not enough fee paid: 100 wei");
     //require(_sCustomers[_customer] == false, "The customer already exists");
     _sCustomers.push(_customer);
     _sNumberOfCustomers++;
     _sBalances[address(this)] += msg.value;
-    emit PartnerRegistered(msg.sender);
+    emit CustomerRegistered(msg.sender);
     return true;
   }
 
-
   /// @notice Deposit ether into loyalty program
   /// @return The balance of the user after the deposit is made
-  function deposit(uint _amount) public payable returns (uint) {
+  function deposit() public payable returns (uint) {
     require(_sPartners[msg.sender], "Partner not enrolled");
     _sBalances[msg.sender] += msg.value;
-    emit LogDepositMade(msg.sender, _amount);
+    emit LogDepositMade(msg.sender, msg.value);
     return msg.value;
   }
 
@@ -110,7 +108,6 @@ import "@chainlink/contracts/src/v0.8/interfaces/KeeperCompatibleInterface.sol";
   /// @param withdrawAmount amount you want to withdraw
   /// @return The balance remaining for the user
   function withdraw(uint withdrawAmount) public returns (uint) {
-    //console.log("Kgang", _sBalances[msg.sender]);
     require(_sBalances[msg.sender] >= withdrawAmount,"Insufficient funds");
     _sBalances[msg.sender] = _sBalances[msg.sender] - withdrawAmount;
     payable(msg.sender).transfer(withdrawAmount);

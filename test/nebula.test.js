@@ -1,3 +1,4 @@
+const { catchRevert } = require("./exceptionsHelpers.js");
 var Nebula = artifacts.require("./Nebula.sol");
 
 /*
@@ -7,8 +8,10 @@ var Nebula = artifacts.require("./Nebula.sol");
  */
 contract("Nebula", function (accounts) {
 
-  const [contractOwner, madtrix] = accounts;
-  const deposit = web3.utils.toBN(2);
+  const [contractOwner, madtrix, mampudi, horus] = accounts;
+  const deposit = web3.utils.toBN(1000);
+  const customerRegistrationdeposit = web3.utils.toBN(99);
+  const customerRegistrationFee = web3.utils.toBN(100);
 
   beforeEach(async () => {
     instance = await Nebula.new();
@@ -23,4 +26,40 @@ contract("Nebula", function (accounts) {
     await Nebula.deployed();
     return assert.isTrue(true);
   });
+  
+  it("is owned by owner", async () => {
+    assert.equal(
+      await instance._sOwner.call(),
+      contractOwner,
+      "owner is not correct",
+    );
+  });
+
+  it("should mark partner as registered", async () => {
+    await instance.registerPartner({ from: madtrix, value: deposit  });
+    assert.equal(await instance.partnerRegistered(madtrix),true);
+  });
+
+  it("should not register customer bacause partner is not registered", async () => {
+    await catchRevert(await instance.registerCustomer(mampudi,{ from: madtrix, value: customerRegistrationdeposit}));
+
+  });
+
+  it("should not register customer bacause of insuffcient rgsitration fee", async () => {
+    await instance.registerPartner({ from: madtrix, value: deposit  });
+    assert.equal(await instance.registerCustomer(mampudi,{ from: madtrix, value: customerRegistrationdeposit}), true);
+
+  });
+  
+  it("should register customer", async () => {
+    await instance.registerPartner({ from: madtrix, value: deposit  });
+    await instance.registerCustomer(mampudi,{ from: madtrix, value: customerRegistrationFee});
+    assert.equal(
+      await instance._sNumberOfCustomers.call(),
+      1,
+      "number of customers is not correct",
+    );
+
+  });
+
 });
