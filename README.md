@@ -15,5 +15,3 @@ The customers that have made a purchase from any of the partners within the last
 3. As a customer I want to take part in weekly lottery so that I can get more value for shopping at partner stores or websites.
 4. As a partner I want to sponsor a weekly lottery amount so that I can make customers come to my store or website.
 5. As a customer I want to see how and where I earned my ETH so that I am able to make better decisions of where I shop in future. 
-
-
