@@ -130,7 +130,7 @@ mmEarn.onclick = async () => {
   dapp.hidden = false;
   home.hidden = true;
   registerPartnerDiv.hidden = true;
-  registerPartnerDiv.hidden = false;
+  registerCustomerDiv.hidden = true;
 }
 
 const mmRegisterPartner = document.getElementById('mm-registerPartner');
