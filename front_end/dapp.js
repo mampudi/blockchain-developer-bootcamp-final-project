@@ -35,6 +35,8 @@ const ssABI =
 	}
 ]
 
+
+
 // Using the 'load' event listener for Javascript to
 // check if window.ethereum is available
 
@@ -45,7 +47,7 @@ window.addEventListener('load', function() {
     if (window.ethereum.isMetaMask === true) {
       console.log('MetaMask is active')
       let mmDetected = document.getElementById('mm-detected')
-      mmDetected.innerHTML += 'MetaMask Is Available!'
+      mmDetected.innerHTML += 'Please click Connect Wallet to sign in with Meta-Mask'
 
       // add in web3 here
       var web3 = new Web3(window.ethereum)
@@ -70,7 +72,6 @@ var web3 = new Web3(window.ethereum)
 // Grabbing the button object,  
 
 const mmEnable = document.getElementById('mm-connect');
-
 // since MetaMask has been detected, we know
 // `ethereum` is an object, so we'll do the canonical
 // MM request to connect the account. 
@@ -81,10 +82,18 @@ const mmEnable = document.getElementById('mm-connect');
  
 mmEnable.onclick = async () => {
   await ethereum.request({ method: 'eth_requestAccounts'})
-  // grab mm-current-account
-  // and populate it with the current address
-  var mmCurrentAccount = document.getElementById('mm-current-account');
-  mmCurrentAccount.innerHTML = 'Current Account: ' + ethereum.selectedAddress
+  let balance = await web3.eth.getBalance(ethereum.selectedAddress);
+  let network = await web3.eth.net.getNetworkType();
+
+  mmEnable.innerHTML = "<b>Account:</b> " + ethereum.selectedAddress + " | <b>ETH:</b> " + web3.utils.fromWei(balance)+ " | Network: " + network;
+  mmEnable.className = "active";
+
+  
+
+  var dapp = document.getElementById('dapp');
+  var home = document.getElementById('home');
+  dapp.hidden = false;
+  home.hidden = true;
 }
 
 // grab the button for input to a contract:
@@ -98,6 +107,8 @@ ssSubmit.onclick = async () => {
   console.log(ssInputValue)
 
   var web3 = new Web3(window.ethereum)
+
+  
 
   // instantiate smart contract instance
   
