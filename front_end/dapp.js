@@ -49,6 +49,16 @@ window.addEventListener('load', function() {
       let mmDetected = document.getElementById('mm-detected')
       mmDetected.innerHTML += 'Please click Connect Wallet to sign in with Meta-Mask'
 
+      let registerPartner = document.getElementById('mm-registerPartner')
+      registerPartner.hidden = true;
+      let registerCustomer = document.getElementById('mm-registerCustomer')
+      registerCustomer.hidden = true;
+      let earn = document.getElementById('mm-earn')
+      earn.hidden = true;
+      let disconnect = document.getElementById('mm-disconnect')
+      disconnect.hidden = true;
+
+
       // add in web3 here
       var web3 = new Web3(window.ethereum)
 
@@ -72,14 +82,7 @@ var web3 = new Web3(window.ethereum)
 // Grabbing the button object,  
 
 const mmEnable = document.getElementById('mm-connect');
-// since MetaMask has been detected, we know
-// `ethereum` is an object, so we'll do the canonical
-// MM request to connect the account. 
-// 
-// typically we only request access to MetaMask when we
-// need the user to do something, but this is just for
-// an example
- 
+
 mmEnable.onclick = async () => {
   await ethereum.request({ method: 'eth_requestAccounts'})
   let balance = await web3.eth.getBalance(ethereum.selectedAddress);
@@ -88,12 +91,76 @@ mmEnable.onclick = async () => {
   mmEnable.innerHTML = "<b>Account:</b> " + ethereum.selectedAddress + " | <b>ETH:</b> " + web3.utils.fromWei(balance)+ " | Network: " + network;
   mmEnable.className = "active";
 
+  let registerPartner = document.getElementById('mm-registerPartner')
+  registerPartner.hidden = false;
+  let registerCustomer = document.getElementById('mm-registerCustomer')
+  registerCustomer.hidden = false;
+  let earn = document.getElementById('mm-earn')
+  earn.hidden = false;
+  let disconnect = document.getElementById('mm-disconnect')
+  disconnect.hidden = false;
+
   
 
   var dapp = document.getElementById('dapp');
   var home = document.getElementById('home');
+  var registerPartnerDiv = document.getElementById('registerPartner');
+
+  
+  dapp.hidden = true;
+  home.hidden = true;
+  registerPartnerDiv.hidden = false;
+}
+
+const mmDisconnect = document.getElementById('mm-disconnect');
+
+mmDisconnect.onclick = async () => {
+  location.reload();
+}
+
+const mmEarn = document.getElementById('mm-earn');
+
+mmEarn.onclick = async () => {
+  var dapp = document.getElementById('dapp');
+  var home = document.getElementById('home');
+  var registerPartnerDiv = document.getElementById('registerPartner');
+  var registerCustomerDiv = document.getElementById('registerCustomer');
+
+  
   dapp.hidden = false;
   home.hidden = true;
+  registerPartnerDiv.hidden = true;
+  registerPartnerDiv.hidden = false;
+}
+
+const mmRegisterPartner = document.getElementById('mm-registerPartner');
+
+mmRegisterPartner.onclick = async () => {
+  var dapp = document.getElementById('dapp');
+  var home = document.getElementById('home');
+  var registerPartnerDiv = document.getElementById('registerPartner');
+  var registerCustomerDiv = document.getElementById('registerCustomer');
+
+  
+  dapp.hidden = true;
+  home.hidden = true;
+  registerCustomerDiv.hidden = true;
+  registerPartnerDiv.hidden = false;
+}
+
+const mmCustomer = document.getElementById('mm-registerCustomer');
+
+mmCustomer.onclick = async () => {
+  var dapp = document.getElementById('dapp');
+  var home = document.getElementById('home');
+  var registerPartnerDiv = document.getElementById('registerPartner');
+  var registerCustomerDiv = document.getElementById('registerCustomer');
+
+  
+  dapp.hidden = true;
+  home.hidden = true;
+  registerCustomerDiv.hidden = false;
+  registerPartnerDiv.hidden = true;
 }
 
 // grab the button for input to a contract:
@@ -101,14 +168,9 @@ mmEnable.onclick = async () => {
 const ssSubmit = document.getElementById('ss-input-button');
 
 ssSubmit.onclick = async () => {
-  // grab value from input
-  
   const ssInputValue = document.getElementById('ss-input-box').value;
   console.log(ssInputValue)
-
   var web3 = new Web3(window.ethereum)
-
-  
 
   // instantiate smart contract instance
   
@@ -118,6 +180,8 @@ ssSubmit.onclick = async () => {
   await simpleStorage.methods.store(ssInputValue).send({from: ethereum.selectedAddress})
 
 }
+
+
 
 const ssGetValue = document.getElementById('ss-get-value')
 
