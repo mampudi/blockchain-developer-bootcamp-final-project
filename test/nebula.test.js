@@ -9,9 +9,9 @@ var Nebula = artifacts.require("./Nebula.sol");
 contract("Nebula", function (accounts) {
 
   const [contractOwner, madtrix, mampudi, horus] = accounts;
-  const deposit = web3.utils.toBN(1000);
-  const customerRegistrationdeposit = web3.utils.toBN(99);
-  const customerRegistrationFee = web3.utils.toBN(100);
+  const deposit = web3.utils.toBN(1 * 10 ** 18);
+  const customerRegistrationdeposit = 0.01 * 10 ** 18;
+  const customerRegistrationFee = 0.1 * 10 ** 18;
 
   beforeEach(async () => {
     instance = await Nebula.new();

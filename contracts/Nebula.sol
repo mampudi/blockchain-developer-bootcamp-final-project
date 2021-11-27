@@ -14,8 +14,8 @@ import "@chainlink/contracts/src/v0.8/interfaces/KeeperCompatibleInterface.sol";
   event LogWithdrawal(address indexed accountAddress, uint withdrawAmount, uint newBalance);
   event OwnerChanged(address newOwner);
 
-  uint public _sPartnerRegistrationFee = 1000 wei;
-  uint public _sCustomerRegistrationFee = 100 wei;
+  uint public _sPartnerRegistrationFee = 1 * 10 ** 18; //1 ether
+  uint public _sCustomerRegistrationFee = 0.1 * 10 ** 18; //0.1 ether
   uint public _sNumberOfCustomers;
   uint public _sNumberOfLotteryCustomers;
   uint public _sNumberOfPartners;
@@ -69,7 +69,7 @@ import "@chainlink/contracts/src/v0.8/interfaces/KeeperCompatibleInterface.sol";
   //partner pays to register
   function registerPartner() public payable returns (bool) {
     require(_sPartners[msg.sender] == false, "The partnet already exists");
-    require(msg.value >= _sPartnerRegistrationFee, "Not enough fee paid 1000 wei");
+    require(msg.value >= _sPartnerRegistrationFee, "Not enough fee paid 1 ether");
     _sPartners[msg.sender] = true;
     _sNumberOfPartners++;
     _sBalances[address(this)] += msg.value;
@@ -85,7 +85,7 @@ import "@chainlink/contracts/src/v0.8/interfaces/KeeperCompatibleInterface.sol";
   //partner pays to register a customer
   function registerCustomer(address payable _customer) public payable returns (bool) {
     require(_sPartners[msg.sender], "Partner not registered");
-    require(msg.value >= _sCustomerRegistrationFee, "Not enough fee paid: 100 wei");
+    require(msg.value >= _sCustomerRegistrationFee, "Not enough fee paid: 0.1 ether");
     //require(_sCustomers[_customer] == false, "The customer already exists");
     _sCustomers.push(_customer);
     _sNumberOfCustomers++;

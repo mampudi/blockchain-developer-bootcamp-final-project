@@ -9,16 +9,15 @@
   <link
       href="dapp.css"
       rel="stylesheet"
-    />
-
+  />
 </head>
 <body>
   <div class="topnav">
-    <a href="#home" id="mm-connect">Connect Wallet</a>
-    <a href="#home" id="mm-disconnect">Disconnect</a>
-    <a href="#news" id="mm-registerPartner">Register Partner</a>
-    <a href="#news" id="mm-registerCustomer">Register Customer</a>
-    <a href="#news" id="mm-earn">Earn</a>
+    <a href="#" id="mm-connect">Connect Wallet</a>
+    <a href="#" id="mm-disconnect">Disconnect</a>
+    <a href="#" id="mm-earn">Earn</a>
+    <a href="#" id="mm-registerCustomer">Customer</a>
+    <a href="#" id="mm-registerPartner">Partner</a>
     
   </div>
 
@@ -30,29 +29,67 @@
   </div>
 
   <div id="dapp" hidden="true" class="centered-wrapper ">
-    <div id="mm-detected"></div>
     <h1>Earn</h1>
-    <!-- Provide an input to change the contract text value -->
-    <div>
-    <input id="ss-input-box" type="number" placeholder="Provide input"/>  
-  </div>
-    <button id="ss-input-button">Submit Value</button>
-
-    <!-- Read input from contract -->
-    <div>
-      <button id="ss-get-value">Get Simple Storage value</button>
-    </div>
-    <div id="ss-display-value">Current Simple Storage Value: </div>
+    <form class="pure-form" align="center">
+      <!-- Read input from contract -->
+      <div>
+        <input id="ss-earnaddress-input-box" class="pure-input-rounded" placeholder="Address"/>  
+        <button id="ss-get-earnvalue" class="button">Check Customer Status</button>
+      </div>
+      <div id="ss-display-earnvalue"></div>
+      <br>
+      <!-- Provide an input to change the contract text value -->
+      <div>
+        <input id="ss-earnaddressamount-input-box" class="pure-input-rounded" placeholder="Address"/>  <br>
+        <input id="ss-earnamount-input-box" class="pure-input-rounded" type="number" placeholder="100.00"/>  
+        
+      </div>
+      <button id="ss-earn-button" class="button">Earn</button>
+      <div id="ss-display-customerEarnResult"></div>
+    </form>
   </div>
 
   <div id="registerPartner" hidden="true" class="centered-wrapper ">
-    <h1>Register Partner</h1>
-    
+    <h1>Partner Management</h1>
+    <form class="pure-form" align="center">
+      <!-- Read input from contract -->
+      <div>
+        <input id="ss-partneraddress-input-box" class="pure-input-rounded" placeholder="Address"/>  
+        <button id="ss-get-partnervalue" class="button">Check Partner Status</button>
+      </div>
+      <div id="ss-display-partnervalue"></div>
+      <br>
+      <!-- Provide an input to change the contract text value -->
+      <div>
+        <input id="ss-partnerregistrationfee-input-box" class="pure-input-rounded" type="number" placeholder="1 ether registration fee"/>  
+        <button id="ss-registerpartner-button" class="button">Register Partner</button>
+      </div>
+      
+      <div id="ss-display-registrationResult"></div>
+    </form>
+    </div>
   </div>
 
   <div id="registerCustomer" hidden="true" class="centered-wrapper ">
-    <h1>Register Customer</h1>
-    
+    <h1>Validate Customer</h1>
+    <form class="pure-form" align="center">
+      <!-- Read input from contract -->
+      <div>
+        <input id="ss-customeraddress-input-box" class="pure-input-rounded" placeholder="Address"/>  
+        <button id="ss-get-customervalue" class="button">Validate</button>
+      </div>
+      <div id="ss-display-customervalue"></div>
+      <br>
+      <!-- Provide an input to change the contract text value -->
+      <h1>Register Customer</h1>
+      <div>
+        <input id="ss-customerregaddress-input-box" class="pure-input-rounded" placeholder="Address"/>  <br>
+        <input id="ss-customerregistrationfee-input-box" class="pure-input-rounded" placeholder="Customer registration fee"/>  
+        
+      </div>
+      <button id="ss-registercustomer-button" class="button">Register Customer</button>
+      <div id="ss-display-customerRegistrationResult"></div>
+    </form>
   </div>
 
 </body>
