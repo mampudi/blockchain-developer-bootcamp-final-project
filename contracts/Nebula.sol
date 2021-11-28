@@ -1,11 +1,15 @@
 //SPDX-License-Identifier: MIT
 pragma solidity >=0.8.0 <0.9.0;
 
-//yarn add @chainlink/contracts
 import "@chainlink/contracts/src/v0.8/VRFConsumerBase.sol";
 import "@chainlink/contracts/src/v0.8/interfaces/KeeperCompatibleInterface.sol";
 
- contract Nebula is VRFConsumerBase, KeeperCompatibleInterface{
+/// @title A loyalty program contract
+/// @author 0xMampudi
+/// @notice You can use this contract to take part in the Nebula loyalty program
+/// @dev All function calls are currently implemented without side effects
+/// @custom:experimental This is an experimental contract.
+contract Nebula is VRFConsumerBase, KeeperCompatibleInterface{
 
   event PartnerRegistered(address partner);
   event CustomerRegistered(address customer);
@@ -54,19 +58,25 @@ import "@chainlink/contracts/src/v0.8/interfaces/KeeperCompatibleInterface.sol";
     _setOwner(msg.sender);
   }
 
-  //set the owner and make sure it is only callable by the current owner
+  /// @notice Set contract owner
+  /// @dev Sets the contract owner
+  /// @param newOwner The new contract owner
   function setOwner(address newOwner) external onlyOwner {
     _setOwner(newOwner);
   }
 
-  //cannot only get called with the contract e.g the constructor
+  /// @notice Set contract owner
+  /// @dev Sets the contract owner
+  /// @param newOwner The new contract owner
   function _setOwner(address newOwner) internal {
     require(newOwner != address(0), "Owner cannot be a zero address");
     _sOwner = newOwner;
     emit OwnerChanged(newOwner);
   }
 
-  //partner pays to register
+  /// @notice Register a new partner
+  /// @dev Register a new partner
+  /// @return bool true if partner is succesfully registred
   function registerPartner() public payable returns (bool) {
     require(_sPartners[msg.sender] == false, "The partnet already exists");
     require(msg.value >= _sPartnerRegistrationFee, "Not enough fee paid 1 ether");
