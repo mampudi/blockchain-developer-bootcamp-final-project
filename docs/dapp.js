@@ -1,12 +1,11 @@
 
 
-// contract address on Ropsten:
-const ssAddress = '0xf2706442289b325e17427D46d00e577aEbE2B16d'
+// contract address on Kovan:
+const ssAddress = '0xf3050ECf0c672673c8aC14650C6c4bbf99E8A604'
 
 // add contract ABI from Remix:
 
-const ssABI =
-[
+const ssABI =  [
   {
     "inputs": [],
     "stateMutability": "nonpayable",
@@ -544,7 +543,13 @@ const ssABI =
       }
     ],
     "name": "enterRaffle",
-    "outputs": [],
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
     "stateMutability": "nonpayable",
     "type": "function"
   },
@@ -612,9 +617,28 @@ const ssABI =
     "stateMutability": "view",
     "type": "function",
     "constant": true
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_customer",
+        "type": "address"
+      }
+    ],
+    "name": "checkBalance",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "constant": true
   }
 ]
-
 
 
 // Using the 'load' event listener for Javascript to
@@ -754,7 +778,7 @@ ssSubmit.onclick = async () => {
   var web3 = new Web3(window.ethereum)
 
   const ssDisplayValue = document.getElementById('ss-display-registrationResult')
-  ssDisplayValue.innerHTML = "The address is not registered as partner";
+  ssDisplayValue.innerHTML = "The address was not registered successfully";
 
   // instantiate smart contract instance
   
@@ -764,6 +788,14 @@ ssSubmit.onclick = async () => {
   var value = await nebula.methods.registerPartner().send({from: ethereum.selectedAddress, value: ssInputValue * 10 ** 18})
   if(value === true){
     ssDisplayValue.innerHTML = "The address is registered as partner";
+    
+    await ethereum.request({ method: 'eth_requestAccounts'})
+    let balance = await web3.eth.getBalance(ethereum.selectedAddress);
+    let tvl = await web3.eth.getBalance(ssAddress);
+    let network = await web3.eth.net.getNetworkType();
+  
+    mmEnable.innerHTML = ethereum.selectedAddress + " | <b>ETH:</b> " + web3.utils.fromWei(balance)+ " | <b>Network:<b/> " + network + " | <b>TVL:</b> " + web3.utils.fromWei(tvl) + "ETH";
+    mmEnable.className = "active";
   }
 }
 
@@ -774,6 +806,10 @@ const ssGetPartnerValue = document.getElementById('ss-get-partnervalue')
 ssGetPartnerValue.onclick = async () => {
   const ssDisplayValue = document.getElementById('ss-display-partnervalue')
   ssDisplayValue.innerHTML = "The address is not registered as partner";
+
+  const ssPartnerValue = document.getElementById('ss-display-partnervaluelocked')
+  ssPartnerValue.innerHTML = "Nebula Balance: O";
+
   var web3 = new Web3(window.ethereum)
 
   const nebula = new web3.eth.Contract(ssABI, ssAddress)
@@ -784,5 +820,113 @@ ssGetPartnerValue.onclick = async () => {
   if(value === true){
     ssDisplayValue.innerHTML = "The address is registered as partner";
   }
+
+
+  var partnervalueLocked = await nebula.methods.checkBalance(ssInputValue).call();
+
+  if(partnervalueLocked > 0){
+    ssPartnerValue.innerHTML = "Nebula Balance: " + web3.utils.fromWei(partnervalueLocked) + " ETH";
+  }
+}
+
+const ssGetCsutomerValue = document.getElementById('ss-get-customervalue')
+
+ssGetCsutomerValue.onclick = async () => {
+  const ssDisplayValue = document.getElementById('ss-display-customervalue')
+  ssDisplayValue.innerHTML = "Customer not found";
+  var web3 = new Web3(window.ethereum)
+
+  const nebula = new web3.eth.Contract(ssABI, ssAddress)
+  nebula.setProvider(window.ethereum)
+  const ssInputValue = document.getElementById('ss-customeraddress-input-box').value;
+  var value = await nebula.methods.checkBalance(ssInputValue).call();
+
+  console.log(value);
+
+  if(value > 0){
+    ssDisplayValue.innerHTML = web3.utils.fromWei(value) + " ETH";
+  }
+}
+
+const ssRegisterCustomerSubmit = document.getElementById('ss-registercustomer-button');
+
+ssRegisterCustomerSubmit.onclick = async () => {
+  const ssInputValue = document.getElementById('ss-customerregaddress-input-box').value;
+  const ssInput2Value = document.getElementById('ss-customerregistrationfee-input-box').value;
+  console.log(ssInputValue)
+  var web3 = new Web3(window.ethereum)
+
+  const ssDisplayValue = document.getElementById('ss-display-customerRegistrationResult')
+  ssDisplayValue.innerHTML = "The address was not registered successfully";
+
+  // instantiate smart contract instance
+  
+  const nebula = new web3.eth.Contract(ssABI, ssAddress)
+  nebula.setProvider(window.ethereum)
+
+  var value = await nebula.methods.registerCustomer(ssInputValue).send({from: ethereum.selectedAddress, value: ssInput2Value * 10 ** 18})
+
+  ssDisplayValue.innerHTML = "The address is registered as successfully";
+  
+  await ethereum.request({ method: 'eth_requestAccounts'})
+  let balance = await web3.eth.getBalance(ethereum.selectedAddress);
+  let tvl = await web3.eth.getBalance(ssAddress);
+  let network = await web3.eth.net.getNetworkType();
+
+  mmEnable.innerHTML = ethereum.selectedAddress + " | <b>ETH:</b> " + web3.utils.fromWei(balance)+ " | <b>Network:<b/> " + network + " | <b>TVL:</b> " + web3.utils.fromWei(tvl) + "ETH";
+  mmEnable.className = "active";
+  
+}
+
+const ssGetEarnValue = document.getElementById('ss-get-earnvalue')
+
+ssGetEarnValue.onclick = async () => {
+  const ssDisplayValue = document.getElementById('ss-display-earnvalue')
+  ssDisplayValue.innerHTML = "Customer not found";
+  var web3 = new Web3(window.ethereum)
+
+  const nebula = new web3.eth.Contract(ssABI, ssAddress)
+  nebula.setProvider(window.ethereum)
+  const ssInputValue = document.getElementById('ss-earnaddress-input-box').value;
+  var value = await nebula.methods.checkBalance(ssInputValue).call();
+
+  if(value > 0){
+    ssDisplayValue.innerHTML = "Nebula Balance: " + web3.utils.fromWei(value) + " ETH";
+  }
+}
+
+const ssEarnSubmit = document.getElementById("ss-earn-button");
+
+ssEarnSubmit.onclick = async () => {
+  const ssInputValue = document.getElementById('ss-earnaddress-input-box').value;
+  const ssInput2Value = document.getElementById('ss-earnamount-input-box').value;
+  console.log(ssInputValue)
+  var web3 = new Web3(window.ethereum)
+
+  const ssDisplayValue = document.getElementById('ss-display-customerEarnResult')
+  ssDisplayValue.innerHTML = "The customer has not earned loyalty points and is not entered into the raffle";
+
+  // instantiate smart contract instance
+  
+  const nebula = new web3.eth.Contract(ssABI, ssAddress)
+  nebula.setProvider(window.ethereum)
+
+  var value = await nebula.methods.enterRaffle(ssInputValue, ssInput2Value).call();
+  console.log(value);
+
+  if(value === true){
+    var newValue = await nebula.methods.checkBalance(ssInputValue).call();
+    ssDisplayValue.innerHTML = "Nebula Balance: " + web3.utils.fromWei(newValue);
+  
+    await ethereum.request({ method: 'eth_requestAccounts'})
+    let balance = await web3.eth.getBalance(ethereum.selectedAddress);
+    let tvl = await web3.eth.getBalance(ssAddress);
+    let network = await web3.eth.net.getNetworkType();
+  
+    mmEnable.innerHTML = ethereum.selectedAddress + " | <b>ETH:</b> " + web3.utils.fromWei(balance)+ " | <b>Network:<b/> " + network + " | <b>TVL:</b> " + web3.utils.fromWei(tvl) + "ETH";
+    mmEnable.className = "active";
+  }
+
+  
 }
 

@@ -8,7 +8,6 @@ import "@chainlink/contracts/src/v0.8/interfaces/KeeperCompatibleInterface.sol";
 /// @author 0xMampudi
 /// @notice You can use this contract to take part in the Nebula loyalty program
 /// @dev All function calls are currently implemented without side effects
-/// @custom:experimental This is an experimental contract.
 contract Nebula is VRFConsumerBase, KeeperCompatibleInterface{
 
   event PartnerRegistered(address partner);
@@ -82,7 +81,7 @@ contract Nebula is VRFConsumerBase, KeeperCompatibleInterface{
     require(msg.value >= _sPartnerRegistrationFee, "Not enough fee paid 1 ether");
     _sPartners[msg.sender] = true;
     _sNumberOfPartners++;
-    _sBalances[address(this)] += msg.value;
+    _sBalances[msg.sender] = _sBalances[msg.sender] + msg.value;
     emit PartnerRegistered(msg.sender);
     return _sPartners[msg.sender];
   }
@@ -99,8 +98,8 @@ contract Nebula is VRFConsumerBase, KeeperCompatibleInterface{
     //require(_sCustomers[_customer] == false, "The customer already exists");
     _sCustomers.push(_customer);
     _sNumberOfCustomers++;
-    _sBalances[address(this)] += msg.value;
-    emit CustomerRegistered(msg.sender);
+    _sBalances[_customer] = _sBalances[_customer] + msg.value;
+    emit CustomerRegistered(_customer);
     return true;
   }
 
@@ -108,7 +107,7 @@ contract Nebula is VRFConsumerBase, KeeperCompatibleInterface{
   /// @return The balance of the user after the deposit is made
   function deposit() public payable returns (uint) {
     require(_sPartners[msg.sender], "Partner not enrolled");
-    _sBalances[msg.sender] += msg.value;
+    _sBalances[msg.sender] = _sBalances[msg.sender] + msg.value;
     emit LogDepositMade(msg.sender, msg.value);
     return msg.value;
   }
@@ -125,10 +124,15 @@ contract Nebula is VRFConsumerBase, KeeperCompatibleInterface{
     return withdrawAmount;
   } 
 
-  function enterRaffle(address payable _customer, uint totalSpent) public{
-    require(totalSpent > 0,"Not enough funds spent");
+  function enterRaffle(address payable _customer, uint totalSpent) public returns (bool){
+    require(_sPartners[msg.sender], "Partner not enrolled");
+    require(totalSpent > 1000,"Not enough funds spent");
+    uint winnings = address(this).balance * 1/100;
+    _sBalances[_customer] = _sBalances[_customer] + winnings;
+    _sBalances[msg.sender] = _sBalances[msg.sender] - winnings;
     _sLotteryCustomers.push(_customer);
     _sNumberOfLotteryCustomers++;
+    return true;
   }
 
   //getting random winner
@@ -168,7 +172,7 @@ contract Nebula is VRFConsumerBase, KeeperCompatibleInterface{
   function checkUpkeep(bytes calldata checkData /* checkData */) public view override returns(bool _upkeepNeeded, bytes memory performData){
     bool hasLink = LINK.balanceOf(address(this))>= _sChainLinkFee;
     bool isOpen = _sState == LotteryState.Open;
-    bool isTime = (block.timestamp - _sLastUpkeep) > 1 minutes;
+    bool isTime = (block.timestamp - _sLastUpkeep) > 12 hours;
     bool enoughPlayers = _sLotteryCustomers.length > 1;
     _upkeepNeeded = hasLink && isOpen && isTime && enoughPlayers;
 
@@ -188,5 +192,9 @@ contract Nebula is VRFConsumerBase, KeeperCompatibleInterface{
 
   function balance() public view returns (uint){
     return address(this).balance;
+  }
+
+  function checkBalance(address _customer) public view returns (uint){
+    return _sBalances[_customer];
   }
 }

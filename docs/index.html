@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nubula Loyalty Miles</title>
+  <title>Nebula Loyalty Miles</title>
   <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
   <link
       href="dapp.css"
@@ -40,17 +40,17 @@
       <br>
       <!-- Provide an input to change the contract text value -->
       <div>
-        <input id="ss-earnaddressamount-input-box" class="pure-input-rounded" placeholder="Address"/>  <br>
+        Amount Spent at store:
         <input id="ss-earnamount-input-box" class="pure-input-rounded" type="number" placeholder="100.00"/>  
-        
+        <button id="ss-earn-button" class="button">Earn</button>
       </div>
-      <button id="ss-earn-button" class="button">Earn</button>
+     
       <div id="ss-display-customerEarnResult"></div>
     </form>
   </div>
 
   <div id="registerPartner" hidden="true" class="centered-wrapper ">
-    <h1>Partner Management</h1>
+    <h1 id="ss-display-partnervaluelocked"></h1></h1>
     <form class="pure-form" align="center">
       <!-- Read input from contract -->
       <div>
@@ -76,7 +76,7 @@
       <!-- Read input from contract -->
       <div>
         <input id="ss-customeraddress-input-box" class="pure-input-rounded" placeholder="Address"/>  
-        <button id="ss-get-customervalue" class="button">Validate</button>
+        <button id="ss-get-customervalue" class="button">Customer Balance</button>
       </div>
       <div id="ss-display-customervalue"></div>
       <br>
@@ -84,7 +84,7 @@
       <h1>Register Customer</h1>
       <div>
         <input id="ss-customerregaddress-input-box" class="pure-input-rounded" placeholder="Address"/>  <br>
-        <input id="ss-customerregistrationfee-input-box" class="pure-input-rounded" placeholder="Customer registration fee"/>  
+        <input id="ss-customerregistrationfee-input-box" class="pure-input-rounded" type="number" placeholder="0.1"/>  
         
       </div>
       <button id="ss-registercustomer-button" class="button">Register Customer</button>
