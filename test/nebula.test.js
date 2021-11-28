@@ -17,15 +17,6 @@ contract("Nebula", function (accounts) {
     instance = await Nebula.new();
   });
 
-  it("ready to be solved!", async() => {
-    const eth100 = 100e18;
-    assert.equal(await web3.eth.getBalance(madtrix), eth100.toString());
-  });
-
-  it("should assert true", async function () {
-    await Nebula.deployed();
-    return assert.isTrue(true);
-  });
   
   it("is owned by owner", async () => {
     assert.equal(
@@ -51,7 +42,7 @@ contract("Nebula", function (accounts) {
 
   });
 
-  it("should not register customer bacause partner is not registered", async () => {
+  it("should not register customer bacause partner is registered", async () => {
     await catchRevert(instance.registerCustomer(mampudi,{ from: madtrix, value: customerRegistrationdeposit}));
 
   });
