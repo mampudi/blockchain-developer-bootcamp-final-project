@@ -42,7 +42,7 @@ npm install
 ```
 
 ## Test
-
+The local testnet should be running on 8545
 ```bash
 truffle test
 ```
