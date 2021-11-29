@@ -7,7 +7,7 @@
 1. Partner registration fee is not enough
 1. Customer registration fee is not enough
 
-* (SWC-111) Using .call instead of .transfer to send Ether in the purchase function
+* (SWC-111) Using .call instead of .transfer to send Ether in the withdraw function
 * Implemented Checks-Effects-Interactions so that external calls or transfers of Ether happen at the end of each function and after any necessary state changes have been made, to prevent reentrancy attacks.
 
 ## Guarding Against Smart Contract Risks
