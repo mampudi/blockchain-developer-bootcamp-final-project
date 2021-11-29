@@ -1,7 +1,7 @@
 
 
 // contract address on Kovan:
-const ssAddress = '0xf3050ECf0c672673c8aC14650C6c4bbf99E8A604'
+const ssAddress = '0xD5c5B1Ea7F826839e5E98eF14b72c08EfB5591b0'
 
 // add contract ABI from Remix:
 

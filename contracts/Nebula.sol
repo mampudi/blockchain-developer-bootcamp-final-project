@@ -119,7 +119,11 @@ contract Nebula is VRFConsumerBase, KeeperCompatibleInterface{
   function withdraw(uint withdrawAmount) public returns (uint) {
     require(_sBalances[msg.sender] >= withdrawAmount,"Insufficient funds");
     _sBalances[msg.sender] = _sBalances[msg.sender] - withdrawAmount;
-    payable(msg.sender).transfer(withdrawAmount);
+    //payable(msg.sender).transfer(withdrawAmount);
+
+    (bool success,) = msg.sender.call{value: withdrawAmount}("");
+    require(success,"Withdraw transfer failed");
+
     emit LogWithdrawal(msg.sender, withdrawAmount, withdrawAmount);
     return withdrawAmount;
   } 
@@ -151,22 +155,6 @@ contract Nebula is VRFConsumerBase, KeeperCompatibleInterface{
     _sLastUpkeep = block.timestamp;
   }
 
-  function requestFulfillRandomnessLocal(uint256 randomness) public {
-    require(_sLotteryCustomers.length > 0,"No customer is lottery");
-    require(_sState == LotteryState.Open,"The lottery is closed");
-     uint luckyWinner = randomness % _sLotteryCustomers.length;
-     address payable winner = _sLotteryCustomers[luckyWinner];
-     _sRecentWinningCustomer = winner;
-     uint winnings = address(this).balance * _sLotteryPercentage/100;
-     (bool success,) = winner.call{value: winnings}("");
-     require(success,"Lottery winner transfer failed");
-     _sBalances[address(this)] = _sBalances[address(this)] - winnings;
-     _sBalances[winner] = _sBalances[winner] + winnings;
-     _sRecentWinnings = winnings;
-     delete _sLotteryCustomers;
-     _sState = LotteryState.Open;
-    _sLastUpkeep = block.timestamp;
-  }
 
   //after registering with keeper it will run this and call perform upkeep if all the things are true;
   function checkUpkeep(bytes calldata checkData /* checkData */) public view override returns(bool _upkeepNeeded, bytes memory performData){
