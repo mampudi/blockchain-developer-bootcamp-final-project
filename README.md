@@ -14,7 +14,6 @@ The customers that have made a purchase from any of the partners within the last
 * As a customer I want to earn ETH based on my purchases with partners so that I can be financially rewarded for my loyalty.
 * As a customer I want to swap the lotalty value I have earned for DAI so that I can use it to fit my needs when the time comes.
 * As a customer I want to take part in weekly lottery so that I can get more value for shopping at partner stores or websites.
-* As a partner I want to sponsor a weekly lottery amount so that I can make customers come to my store or website.
 
 # Live Deployed Site
 https://mampudi.github.io/blockchain-developer-bootcamp-final-project/#
