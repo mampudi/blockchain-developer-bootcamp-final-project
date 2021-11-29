@@ -20,7 +20,7 @@ The customers that have made a purchase from any of the partners within the last
 https://mampudi.github.io/blockchain-developer-bootcamp-final-project/#
 
 # Screencast Link
-https://www.youtube.com/user/BaLefoko/videos
+https://www.youtube.com/watch?v=IpRLE7yTSls&ab_channel=0xMampudi
 
 # Requirements
 
