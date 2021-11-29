@@ -63,6 +63,8 @@ truffle migrate --network kovan --reset
 
 If needed, edit the `truffle-config.js` config file to set the desired network to a different port. It assumes any network is running the RPC port on 8545.
 
+In vsCode use open with live server to run /docs/index.html
+
 ```bash
 truffle migrate --network local
 ```
