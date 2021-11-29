@@ -1,7 +1,8 @@
 
 // contract address on Kovan:
-const ssAddress = '0x52A1259E47E657f1Cac6352A3B835864a9959aF1'
+const ssAddress = '0x784350c6dfe2FAF83b4b6Be91C621b4c93C40254'
 
+// add contract ABI from Remix:
 
 const ssABI =  [
   {
@@ -810,8 +811,6 @@ ssSubmit.onclick = async () => {
   
     mmEnable.innerHTML = ethereum.selectedAddress + " | <b>ETH:</b> " + web3.utils.fromWei(balance)+ " | <b>Network:<b/> " + network + " | <b>TVL:</b> " + web3.utils.fromWei(tvl) + "ETH";
     mmEnable.className = "active";
-
-    
   }
 }
 
