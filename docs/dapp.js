@@ -1,9 +1,7 @@
 
-
 // contract address on Kovan:
-const ssAddress = '0xD5c5B1Ea7F826839e5E98eF14b72c08EfB5591b0'
+const ssAddress = '0x52A1259E47E657f1Cac6352A3B835864a9959aF1'
 
-// add contract ABI from Remix:
 
 const ssABI =  [
   {
@@ -670,13 +668,29 @@ window.addEventListener('load', function() {
       console.log('MetaMask is not available')
       let mmDetected = document.getElementById('mm-detected')
       mmDetected.innerHTML += 'MetaMask Not Available!'
-      // let node = document.createTextNode('<p>MetaMask Not Available!<p>')
-      // mmDetected.appendChild(node)
+
+      let registerPartner = document.getElementById('mm-registerPartner')
+      registerPartner.hidden = true;
+      let registerCustomer = document.getElementById('mm-registerCustomer')
+      registerCustomer.hidden = true;
+      let earn = document.getElementById('mm-earn')
+      earn.hidden = true;
+      let disconnect = document.getElementById('mm-disconnect')
+      disconnect.hidden = true;
     }
   } else {
     console.log('window.ethereum is not found')
     let mmDetected = document.getElementById('mm-detected')
     mmDetected.innerHTML += '<p>MetaMask Not Available!<p>'
+
+    let registerPartner = document.getElementById('mm-registerPartner')
+      registerPartner.hidden = true;
+      let registerCustomer = document.getElementById('mm-registerCustomer')
+      registerCustomer.hidden = true;
+      let earn = document.getElementById('mm-earn')
+      earn.hidden = true;
+      let disconnect = document.getElementById('mm-disconnect')
+      disconnect.hidden = true;
   }
 })
 
@@ -796,6 +810,8 @@ ssSubmit.onclick = async () => {
   
     mmEnable.innerHTML = ethereum.selectedAddress + " | <b>ETH:</b> " + web3.utils.fromWei(balance)+ " | <b>Network:<b/> " + network + " | <b>TVL:</b> " + web3.utils.fromWei(tvl) + "ETH";
     mmEnable.className = "active";
+
+    
   }
 }
 
