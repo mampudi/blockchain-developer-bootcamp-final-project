@@ -768,20 +768,25 @@ ssSubmit.onclick = async () => {
   nebula.setProvider(window.ethereum)
 
   var value = await nebula.methods.registerPartner().send({from: ethereum.selectedAddress, value: ssInputValue * 10 ** 18})
-  if(!!value){
-    ssDisplayValue.innerHTML = "The address is registered as partner";
-    
-    await ethereum.request({ method: 'eth_requestAccounts'})
-    let balance = await web3.eth.getBalance(ethereum.selectedAddress);
-    let tvl = await web3.eth.getBalance(ssAddress);
-    let network = await web3.eth.net.getNetworkType();
-  
-    mmEnable.innerHTML = ethereum.selectedAddress + " | <b>ETH:</b> " + web3.utils.fromWei(balance)+ " | <b>Network:<b/> " + network + " | <b>TVL:</b> " + web3.utils.fromWei(tvl) + "ETH";
-    mmEnable.className = "active";
-  }
+
+  if(!!value)
+    ssDisplayValue.innerHTML = "The address is registered successfully";
   else{
     ssDisplayValue.innerHTML = "The address was not registered successfully";
   }
+
+
+  ssDisplayValue.innerHTML = "The address is registered as partner";
+  
+  await ethereum.request({ method: 'eth_requestAccounts'})
+  let balance = await web3.eth.getBalance(ethereum.selectedAddress);
+  let tvl = await web3.eth.getBalance(ssAddress);
+  let network = await web3.eth.net.getNetworkType();
+
+  mmEnable.innerHTML = ethereum.selectedAddress + " | <b>ETH:</b> " + web3.utils.fromWei(balance)+ " | <b>Network:<b/> " + network + " | <b>TVL:</b> " + web3.utils.fromWei(tvl) + "ETH";
+  mmEnable.className = "active";
+
+  
 }
 
 
