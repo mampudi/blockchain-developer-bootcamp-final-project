@@ -662,7 +662,16 @@ const mmEnable = document.getElementById('mm-connect');
 
 mmEnable.onclick = async () => {
   await ethereum.request({ method: 'eth_requestAccounts'})
+
+  console.log("kgang1" + ethereum.selectedAddress)
+  if (typeof ethereum.selectedAddress === 'undefined') {
+    console.log("kgang2" + ethereum.selectedAddress)
+    window.location.reload();
+  }
+  
   let balance = await web3.eth.getBalance(ethereum.selectedAddress);
+
+
   let tvl = await web3.eth.getBalance(ssAddress);
   let network = await web3.eth.net.getNetworkType();
 
@@ -751,7 +760,7 @@ ssSubmit.onclick = async () => {
   var web3 = new Web3(window.ethereum)
 
   const ssDisplayValue = document.getElementById('ss-display-registrationResult')
-  ssDisplayValue.innerHTML = "The address was not registered successfully";
+  ssDisplayValue.innerHTML = "processing...";
 
   // instantiate smart contract instance
   
@@ -769,6 +778,9 @@ ssSubmit.onclick = async () => {
   
     mmEnable.innerHTML = ethereum.selectedAddress + " | <b>ETH:</b> " + web3.utils.fromWei(balance)+ " | <b>Network:<b/> " + network + " | <b>TVL:</b> " + web3.utils.fromWei(tvl) + "ETH";
     mmEnable.className = "active";
+  }
+  else{
+    ssDisplayValue.innerHTML = "The address was not registered successfully";
   }
 }
 
@@ -830,7 +842,7 @@ ssRegisterCustomerSubmit.onclick = async () => {
   var web3 = new Web3(window.ethereum)
 
   const ssDisplayValue = document.getElementById('ss-display-customerRegistrationResult')
-  ssDisplayValue.innerHTML = "The address was not registered successfully";
+  ssDisplayValue.innerHTML = "prcessing...";
 
   // instantiate smart contract instance
   
@@ -839,7 +851,11 @@ ssRegisterCustomerSubmit.onclick = async () => {
 
   var value = await nebula.methods.registerCustomer(ssInputValue).send({from: ethereum.selectedAddress, value: ssInput2Value * 10 ** 18})
 
-  ssDisplayValue.innerHTML = "The address is registered as successfully";
+  if(value == true)
+    ssDisplayValue.innerHTML = "The address is registered as successfully";
+  else{
+    ssDisplayValue.innerHTML = "The address was not registered successfully";
+  }
   
   await ethereum.request({ method: 'eth_requestAccounts'})
   let balance = await web3.eth.getBalance(ethereum.selectedAddress);
