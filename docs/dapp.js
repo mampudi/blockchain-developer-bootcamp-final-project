@@ -790,7 +790,7 @@ const ssGetPartnerValue = document.getElementById('ss-get-partnervalue')
 
 ssGetPartnerValue.onclick = async () => {
   const ssDisplayValue = document.getElementById('ss-display-partnervalue')
-  ssDisplayValue.innerHTML = "The address is not registered as partner";
+  ssDisplayValue.innerHTML = "Processing";
 
   const ssPartnerValue = document.getElementById('ss-display-partnervaluelocked')
   ssPartnerValue.innerHTML = "Nebula Balance: O";
@@ -802,8 +802,10 @@ ssGetPartnerValue.onclick = async () => {
   const ssInputValue = document.getElementById('ss-partneraddress-input-box').value;
   var value = await nebula.methods.partnerRegistered(ssInputValue).call();
 
-  if(value === true){
-    ssDisplayValue.innerHTML = "The address is registered as partner";
+  if(!!value)
+    ssDisplayValue.innerHTML = "The address is registered successfully";
+  else{
+    ssDisplayValue.innerHTML = "The address was not registered successfully";
   }
 
 
