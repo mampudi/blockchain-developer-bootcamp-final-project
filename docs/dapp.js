@@ -1,6 +1,6 @@
 
 // contract address on Kovan:
-const ssAddress = '0xa8C4Edba5C380B220962EA26ea11d67103C55f78'
+const ssAddress = '0x8A52B5c6aEa94725E4711580236F8a282F42D44c'
 
 
 const ssABI = [
@@ -900,7 +900,7 @@ ssEarnSubmit.onclick = async () => {
   var web3 = new Web3(window.ethereum)
 
   const ssDisplayValue = document.getElementById('ss-display-customerEarnResult')
-  ssDisplayValue.innerHTML = "The customer has not earned loyalty points and is not entered into the raffle";
+  ssDisplayValue.innerHTML = "Processing";
 
   // instantiate smart contract instance
   
@@ -910,7 +910,12 @@ ssEarnSubmit.onclick = async () => {
   var value = await nebula.methods.enterRaffle(ssInputValue, ssInput2Value).call();
   console.log(value);
 
-  if(value === true){
+  if(!!value)
+    ssDisplayValue.innerHTML = "The address is registered successfully";
+  else{
+    ssDisplayValue.innerHTML = "The address was not registered successfully";
+  }
+
     var newValue = await nebula.methods.checkBalance(ssInputValue).call();
     ssDisplayValue.innerHTML = "Nebula Balance: " + web3.utils.fromWei(newValue);
   
@@ -921,7 +926,6 @@ ssEarnSubmit.onclick = async () => {
   
     mmEnable.innerHTML = ethereum.selectedAddress + " | <b>ETH:</b> " + web3.utils.fromWei(balance)+ " | <b>Network:<b/> " + network + " | <b>TVL:</b> " + web3.utils.fromWei(tvl) + "ETH";
     mmEnable.className = "active";
-  }
 
   
 }
