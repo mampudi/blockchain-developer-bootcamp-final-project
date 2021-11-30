@@ -1,6 +1,6 @@
 
 // contract address on Kovan:
-const ssAddress = '0x96034B917fE8915649ff135b6143F384ED2B4EF0'
+const ssAddress = '0xf93Ac27bf5831c03c72ca39A63AbE28A44d676e7'
 
 
 const ssABI = [
@@ -768,7 +768,7 @@ ssSubmit.onclick = async () => {
   nebula.setProvider(window.ethereum)
 
   var value = await nebula.methods.registerPartner().send({from: ethereum.selectedAddress, value: ssInputValue * 10 ** 18})
-  if(value === true){
+  if(!!value{
     ssDisplayValue.innerHTML = "The address is registered as partner";
     
     await ethereum.request({ method: 'eth_requestAccounts'})
@@ -802,7 +802,7 @@ ssGetPartnerValue.onclick = async () => {
   const ssInputValue = document.getElementById('ss-partneraddress-input-box').value;
   var value = await nebula.methods.partnerRegistered(ssInputValue).call();
 
-  if(!!value)
+  if(value == true)
     ssDisplayValue.innerHTML = "The address is registered successfully";
   else{
     ssDisplayValue.innerHTML = "The address was not registered successfully";
