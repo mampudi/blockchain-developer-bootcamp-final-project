@@ -1,6 +1,6 @@
 
 // contract address on Kovan:
-const ssAddress = '0xdCCD15B81Bf32654B5ef14bF2126c647CfE3a092'
+const ssAddress = '0x96034B917fE8915649ff135b6143F384ED2B4EF0'
 
 
 const ssABI = [
