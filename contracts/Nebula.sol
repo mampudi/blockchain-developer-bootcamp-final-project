@@ -17,7 +17,7 @@ contract Nebula is VRFConsumerBase, KeeperCompatibleInterface{
   event LogWithdrawal(address indexed accountAddress, uint withdrawAmount, uint newBalance);
   event OwnerChanged(address newOwner);
 
-  uint public _sPartnerRegistrationFee = 1 * 10 ** 18; //1 ether
+  uint public _sPartnerRegistrationFee = 0.2 * 10 ** 18; //0.2 ether
   uint public _sCustomerRegistrationFee = 0.1 * 10 ** 18; //0.1 ether
   uint public _sNumberOfCustomers;
   uint public _sNumberOfLotteryCustomers;
@@ -78,7 +78,7 @@ contract Nebula is VRFConsumerBase, KeeperCompatibleInterface{
   /// @return bool true if partner is succesfully registred
   function registerPartner() public payable returns (bool) {
     require(_sPartners[msg.sender] == false, "The partnet already exists");
-    require(msg.value >= _sPartnerRegistrationFee, "Not enough fee paid 1 ether");
+    require(msg.value >= _sPartnerRegistrationFee, "Not enough fee paid 0.2 ether");
     _sPartners[msg.sender] = true;
     _sNumberOfPartners++;
     _sBalances[msg.sender] = _sBalances[msg.sender] + msg.value;

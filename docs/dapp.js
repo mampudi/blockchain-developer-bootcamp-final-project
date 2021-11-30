@@ -1,6 +1,6 @@
 
 // contract address on Kovan:
-const ssAddress = '0xa381D25918E335dcdA67B33313431a4c253E7919'
+const ssAddress = '0xdCCD15B81Bf32654B5ef14bF2126c647CfE3a092'
 
 
 const ssABI = [
@@ -842,17 +842,17 @@ ssRegisterCustomerSubmit.onclick = async () => {
   var web3 = new Web3(window.ethereum)
 
   const ssDisplayValue = document.getElementById('ss-display-customerRegistrationResult')
-  ssDisplayValue.innerHTML = "prcessing...";
+  ssDisplayValue.innerHTML = "processing...";
 
   // instantiate smart contract instance
   
   const nebula = new web3.eth.Contract(ssABI, ssAddress)
   nebula.setProvider(window.ethereum)
 
-  var value = await nebula.methods.registerCustomer(ssInputValue).send({from: ethereum.selectedAddress, value: ssInput2Value * 10 ** 18})
+  var value = await nebula.methods.registerCustomer(ssInputValue).send({from: ethereum.selectedAddress, value: ssInput2Value * 10 ** 18});
 
-  if(value == true)
-    ssDisplayValue.innerHTML = "The address is registered as successfully";
+  if(!!value)
+    ssDisplayValue.innerHTML = "The address is registered successfully";
   else{
     ssDisplayValue.innerHTML = "The address was not registered successfully";
   }
