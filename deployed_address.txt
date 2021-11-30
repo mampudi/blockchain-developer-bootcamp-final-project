@@ -1,3 +1,3 @@
-Nebula Contract (Kovan): 0xf93Ac27bf5831c03c72ca39A63AbE28A44d676e7
+Nebula Contract (Kovan): 0xa8C4Edba5C380B220962EA26ea11d67103C55f78
 
 GitHub Repository: https://github.com/mampudi/blockchain-developer-bootcamp-final-project
